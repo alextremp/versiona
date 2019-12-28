@@ -15,12 +15,12 @@ const versiona = ({
 
   if (!repoOrg || !repoName) {
     log.error(() => 'repoOrg and repoName are required')
-    throw new Error()
+    quit()
   }
   const travisTag = process.env.TRAVIS_TAG
   if (!travisTag) {
     log.error(() => 'TRAVIS_TAG is not in process env')
-    throw new Error()
+    quit()
   }
   if (!REGEX.test(travisTag)) {
     log.error(() => [
@@ -30,12 +30,12 @@ const versiona = ({
         expected: REGEX
       }
     ])
-    throw new Error()
+    quit()
   }
   const ghToken = process.env.GH_TOKEN
   if (!ghToken) {
     log.error(() => 'GH_TOKEN is not in process env')
-    throw new Error()
+    quit()
   }
 
   const releaseVersion = travisTag.replace('v', '')
@@ -71,13 +71,14 @@ const versiona = ({
 
   if (test) {
     log.info(() => 'Test finished')
-    quit()
+    quit(0)
   }
   addShell(`git remote rm origin`)
   addShell(`git remote add origin ${repoURL}`)
   addShell(`git checkout -b ${toBranch}`)
   addFunction(() => fs.writeFileSync(packageJSONPath, updatedJSON))
-  addShell(`git commit -a -m "${message}"`)
+  addShell(`git add package.json`)
+  addShell(`git commit -m "${message}"`)
   addShell(`npm publish${isBeta ? ' --tag beta' : ''}`)
   addShell(`git push --repo=${repoURL} origin ${toBranch} --quiet`)
 

@@ -16,6 +16,7 @@ const run = () => {
           error
         }
       ])
+      quit()
     }
   })
   log.info(() => 'Finished')
@@ -26,13 +27,14 @@ const addFunction = f => queue.push(() => f())
 const addShell = command => {
   queue.push(() => {
     log.info(() => ['command', {command}])
-    if (shell.exec(command).code !== 0) {
-      log.info(() => ['Error running command'])
-      shell.exit(1)
+    const result = shell.exec(command)
+    if (result.code !== 0) {
+      log.error(() => ['Error running command', {code: result.code}])
+      quit(result.code)
     }
   })
 }
 
-const quit = (code = 0) => shell.exit(code)
+const quit = (code = 1) => shell.exit(code)
 
 export {run, quit, addFunction, addShell}
