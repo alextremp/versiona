@@ -5,21 +5,23 @@ import {log} from './logger'
 const queue = []
 
 const run = () => {
-  const command = queue.shift()
-  if (!command) {
-    log.info(() => 'Finished')
-    shell.exit(0)
-  }
-  command()
-  const tid = setTimeout(() => {
-    clearTimeout(tid)
-    run()
-  }, 500)
+  queue.forEach(command => {
+    try {
+      command()
+    } catch (error) {
+      log.error(() => [
+        'Error running command',
+        {
+          command,
+          error
+        }
+      ])
+    }
+  })
+  log.info(() => 'Finished')
 }
 
-const addFunction = f => {
-  queue.push(() => f())
-}
+const addFunction = f => queue.push(() => f())
 
 const addShell = command => {
   queue.push(() => {
