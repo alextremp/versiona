@@ -7,6 +7,14 @@
   "license": "MIT",
   "repository": "github:alextremp/versiona",
   "bugs": "https://github.com/alextremp/versiona/issues",
+  "keywords": [
+    "travis",
+    "ci",
+    "deploy",
+    "publish",
+    "version",
+    "semver"
+  ],
   "scripts": {
     "clean": "rm -Rf dist",
     "phoenix": "rm -Rf node_modules && rm -Rf package-lock.json && npm i",
@@ -14,7 +22,7 @@
     "lint": "sui-lint js",
     "check": "npm run lint",
     "build": "npm run clean && babel src/main --out-dir dist",
-    "version": "npm run build && node versiona.js"
+    "version": "rm -Rf deploy && babel src/main --out-dir deploy && node versiona.js"
   },
   "devDependencies": {
     "@babel/cli": "^7.7.5",

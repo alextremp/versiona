@@ -2,6 +2,7 @@
 versiona.js
 node_modules
 src
+deploy
 .gitignore
 .idea
 .travis.yml
