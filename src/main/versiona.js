@@ -1,8 +1,22 @@
 import {log} from './logger'
 import fs from 'fs'
-import {run, addShell, addFunction} from './runner'
+import path from 'path'
+import {run, quit, addShell, addFunction} from './runner'
 
-const versiona = ({repoOrg, repoName, host = 'github.com'} = {}) => {
+const versiona = ({
+  repoOrg,
+  repoName,
+  host = 'github.com',
+  pathToPackageJSON = 'package.json',
+  test = false
+} = {}) => {
+  const packageJSONPath = path.resolve(process.cwd(), pathToPackageJSON)
+  const packageJSON = require(packageJSONPath)
+
+  if (!repoOrg || !repoName) {
+    log.error(() => 'repoOrg and repoName are required')
+    throw new Error()
+  }
   const travisTag = process.env.TRAVIS_TAG
   if (!travisTag) {
     log.error(() => 'TRAVIS_TAG is not in process env')
@@ -23,8 +37,6 @@ const versiona = ({repoOrg, repoName, host = 'github.com'} = {}) => {
     log.error(() => 'GH_TOKEN is not in process env')
     throw new Error()
   }
-
-  const packageJSON = require('./package.json')
 
   const releaseVersion = travisTag.replace('v', '')
 
@@ -52,11 +64,16 @@ const versiona = ({repoOrg, repoName, host = 'github.com'} = {}) => {
       isBeta,
       toBranch,
       oldversion: oldVersion,
-      newVersion: releaseVersion
+      newVersion: releaseVersion,
+      packageJSON: pathToPackageJSON
     }
   ])
 
-  addFunction(() => fs.writeFileSync('package.json', updatedJSON))
+  if (test) {
+    log.info(() => 'Test finished')
+    quit()
+  }
+  addFunction(() => fs.writeFileSync(packageJSONPath, updatedJSON))
   addShell(`git remote rm origin`)
   addShell(`git remote add origin ${repoURL}`)
   addShell(`git checkout -b ${toBranch}`)

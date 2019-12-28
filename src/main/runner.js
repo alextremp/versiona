@@ -35,4 +35,6 @@ const addShell = command => {
   })
 }
 
-export {run, addFunction, addShell}
+const quit = (code = 0) => shell.exit(code)
+
+export {run, quit, addFunction, addShell}
