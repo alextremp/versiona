@@ -7,6 +7,14 @@
   "license": "MIT",
   "repository": "github:alextremp/versiona",
   "bugs": "https://github.com/alextremp/versiona/issues",
+  "keywords": [
+    "travis",
+    "ci",
+    "deploy",
+    "publish",
+    "version",
+    "semver"
+  ],
   "scripts": {
     "clean": "rm -Rf dist",
     "phoenix": "rm -Rf node_modules && rm -Rf package-lock.json && npm i",
