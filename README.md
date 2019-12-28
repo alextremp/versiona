@@ -17,9 +17,10 @@ This library will:
   * Commit to **master** for Release versions (vX.Y.Z)
   * Commit to **develop/vX** for Beta Release versions (vX.Y.Z-beta.A)
 
-By releasing your NPM packages this way, you will:
+By releasing your NPM packages this way, your collaborators will be aimed to:
 * have full control of when a new version should be publicly available 
 * know which release tag corresponds to each available NPM version of your package
+* doc the releases :)
 * don't publish from localhost! ;)
 
 ## Usage
@@ -83,15 +84,20 @@ script:
 
 ### Failed publishing from a tag
 
-Revert a tag locally
-```
-git tag -d vX.Y.Z 
-```
+* Ensure that with vX.Y.Z release, the package.json didn't have the X.Y.Z version already (so it won't commit a new version, and so, it won't publish)
+* Ensure that the X.Y.Z version does not already exist in NPM 
+* In case of creating a tag by mistake:
 
-Revert a tag in Github
-```
-git push --delete origin vX.Y.Z
-```
+>Revert a tag locally
+>```
+>git tag -d vX.Y.Z 
+>```
+>
+>Revert a tag in Github
+>```
+>git push --delete origin vX.Y.Z
+>```
+
 ## Maintainers
 
 This library uses itself to publish to NPM.
