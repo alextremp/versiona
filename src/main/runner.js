@@ -26,14 +26,10 @@ const addFunction = f => queue.push(() => f())
 const addShell = command => {
   queue.push(() => {
     log.info(() => ['command', {command}])
-    shell.exec(command, (code, stdout, stderr) => {
-      log.info(() => ['exit code', {code}])
-      log.info(() => ['output', stdout])
-      if (code !== 0) {
-        log.info(() => ['Exiting', stderr])
-        shell.exit(code)
-      }
-    })
+    if (shell.exec(command).code !== 0) {
+      log.info(() => ['Error running command'])
+      shell.exit(1)
+    }
   })
 }
 
