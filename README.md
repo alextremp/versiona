@@ -17,6 +17,11 @@ This library will:
   * Commit to **master** for Release versions (vX.Y.Z)
   * Commit to **develop/vX** for Beta Release versions (vX.Y.Z-beta.A)
 
+By releasing your NPM packages this way, you will:
+* have full control of when a new version should be publicly available 
+* know which release tag corresponds to each available NPM version of your package
+* don't publish from localhost! ;)
+
 ## Usage
 
 Install versiona:
