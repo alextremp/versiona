@@ -17,6 +17,11 @@ This library will:
   * Commit to **master** for Release versions (vX.Y.Z)
   * Commit to **develop/vX** for Beta Release versions (vX.Y.Z-beta.A)
 
+By releasing your NPM packages this way, you will:
+* have full control of when a new version should be publicly available 
+* know which release tag corresponds to each available NPM version of your package
+* don't publish from localhost! ;)
+
 ## Usage
 
 Install versiona:
@@ -31,8 +36,10 @@ Create a **versiona.js** script into your project:
 const versiona = require('versiona')
 
 versiona({
-  repoOrg: 'your_repo_org_or_username', // ex: 'alextremp'
-  repoName: 'your_repo_name             // ex: 'versiona'    
+  repoOrg: 'your_repo_org_or_username',         // required, ex: 'alextremp'
+  repoName: 'your_repo_name',                   // required, ex: 'versiona'
+  pathToPackageJSON: 'path_to_package.json',    // defaults to 'package.json', set the relative path to package json if it's not in the same folder than the script
+  test: false                                   // true if just want to test the config without publishing / committing, defaults to false     
 })
 ```
 
@@ -63,7 +70,7 @@ script:
     echo TRAVIS_BRANCH=$TRAVIS_BRANCH - TRAVIS_PULL_REQUEST=$TRAVIS_PULL_REQUEST - TRAVIS_TAG=$TRAVIS_TAG
     if [[ $TRAVIS_TAG =~ ^v[0-9]+\.[0-9]+\.[0-9]+(-beta\.[0-9]+)?$ ]]; then
       echo DEPLOY VERSION - TRAVIS_BRANCH=$TRAVIS_BRANCH, PR=$PR, BRANCH=$BRANCH
-      TRAVIS_BRANCH=$TRAVIS_BRANCH GH_TOKEN=$GH_TOKEN npm run version
+      TRAVIS_TAG=$TRAVIS_TAG GH_TOKEN=$GH_TOKEN npm run version
     fi
 ```
 
@@ -72,6 +79,20 @@ script:
   * This library only uses the tokens, does not store / send / ... them to anywhere
   
  
+## Troubleshooting
+
+### Failed publishing from a tag
+
+Revert a tag locally
+```
+git tag -d vX.Y.Z 
+```
+
+Revert a tag in Github
+```
+git push --delete origin vX.Y.Z
+```
 ## Maintainers
 
 This library uses itself to publish to NPM.
+
