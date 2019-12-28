@@ -73,12 +73,11 @@ const versiona = ({
     log.info(() => 'Test finished')
     quit()
   }
-  addFunction(() => fs.writeFileSync(packageJSONPath, updatedJSON))
   addShell(`git remote rm origin`)
   addShell(`git remote add origin ${repoURL}`)
   addShell(`git checkout -b ${toBranch}`)
-  addShell('git add package.json')
-  addShell(`git commit -m "${message}"`)
+  addFunction(() => fs.writeFileSync(packageJSONPath, updatedJSON))
+  addShell(`git commit -a -m "${message}"`)
   addShell(`npm publish${isBeta ? ' --tag beta' : ''}`)
   addShell(`git push --repo=${repoURL} origin ${toBranch} --quiet`)
 
