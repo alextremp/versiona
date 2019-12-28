@@ -1,0 +1,46 @@
+{
+  "name": "versiona",
+  "version": "0.0.1",
+  "description": "NPM auto publisher tool for Travis CI + Git tags commiting new package version",
+  "main": "dist",
+  "author": "Alex Castells",
+  "license": "MIT",
+  "repository": "github:alextremp/versiona",
+  "bugs": "https://github.com/alextremp/versiona/issues",
+  "scripts": {
+    "clean": "rm -Rf dist",
+    "phoenix": "rm -Rf node_modules && rm -Rf package-lock.json && npm i",
+    "prepack": "npm run clean && npm run build",
+    "lint": "sui-lint js",
+    "check": "npm run lint",
+    "build": "npm run clean && babel src/main --out-dir dist",
+    "version": "npm run build && node versiona.js"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.7.5",
+    "@babel/core": "^7.7.5",
+    "@babel/plugin-transform-modules-commonjs": "^7.7.5",
+    "@babel/register": "^7.7.4",
+    "@babel/runtime": "^7.7.6",
+    "@s-ui/lint": "^3.14.0",
+    "babel-loader": "^8.0.6"
+  },
+  "babel": {
+    "plugins": [
+      "@babel/plugin-transform-modules-commonjs"
+    ]
+  },
+  "eslintConfig": {
+    "extends": [
+      "./node_modules/@s-ui/lint/eslintrc.js"
+    ]
+  },
+  "prettier": "./node_modules/@s-ui/lint/.prettierrc.js",
+  "stylelint": {
+    "extends": "./node_modules/@s-ui/lint/stylelint.config.js"
+  },
+  "dependencies": {
+    "logda": "0.0.1",
+    "shelljs": "^0.8.3"
+  }
+}
