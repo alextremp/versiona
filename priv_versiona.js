@@ -1,4 +1,4 @@
-const versiona = require('./deploy/index').default
+const versiona = require('./deploy/index')
 
 versiona({
   repoOrg: 'alextremp',
