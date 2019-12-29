@@ -1,3 +1,3 @@
 import {versiona} from './versiona'
 
-export default versiona
+module.exports = versiona
