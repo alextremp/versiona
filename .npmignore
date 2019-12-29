@@ -1,5 +1,5 @@
 .private
-versiona.js
+priv_versiona.js
 node_modules
 src
 deploy
