@@ -1,6 +1,7 @@
 # versiona [![NPM Module](https://img.shields.io/npm/v/versiona.svg)](https://www.npmjs.com/package/versiona)
 
 [![Build Status](https://travis-ci.org/alextremp/versiona.svg?branch=master)](https://travis-ci.org/alextremp/versiona)
+[![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/alextremp/versiona.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/alextremp/versiona/context:javascript)
 [![Maintainability](https://api.codeclimate.com/v1/badges/c2ea0ca1472cb7af910f/maintainability)](https://codeclimate.com/github/alextremp/versiona/maintainability)
 
 **Versiona** is a Travis CI helper tool for NPM projects where teams use Github tags to create new Releases, so assuming:
