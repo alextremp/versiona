@@ -31,6 +31,19 @@ Releasing to NPM this way, your collaborators will be aimed to:
 * Add documentation to the Github Releases.
 * Not publishing from localhost! ;)
 
+## Requirements
+
+**versiona** can be launched from any command line environment, but will require to have these environment variables available:
+* **NPM_TOKEN**
+  * Will be used to publish the package to NPM.
+  * Check [Creating and Viewing Auth Tokens in NPM](https://docs.npmjs.com/creating-and-viewing-authentication-tokens).
+  * **Read and Publish** permission is required to publish packages.
+* **GH_TOKEN**
+  * Will be used to commit a new package.json version to Github.
+  * Check [Creating a Personal Access Token in Github](https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line)
+  
+When used in Travis CI, just add these tokens in the Settings of your repo **with the secured option to avoid showing the tokens content in the Travis logs** 
+
 ## Usage
 
 
@@ -96,8 +109,6 @@ before_install:
   - npm config set //registry.npmjs.org/:_authToken=$NPM_TOKEN
 ```
   * The **NPM_TOKEN** will be required in order to enable the NPM publish command.
-  * Check [Creating and Viewing Auth Tokens in NPM](https://docs.npmjs.com/creating-and-viewing-authentication-tokens).
-  * **Read and Publish** permission is required to publish packages.
   
 ```
 npm run check
@@ -110,7 +121,7 @@ TRAVIS_TAG=$TRAVIS_TAG GH_TOKEN=$GH_TOKEN npm run versiona
   * This runs **versiona**
   * **TRAVIS_TAG** is required, **versiona** will check if the TRAVIS_TAG is set and matches the _^v[0-9]+\.[0-9]+\.[0-9]+(-beta\.[0-9]+)?$_ regexp (**semver format**, p.ex.: _v2.3.1_ or _v3.0.0-beta.1_)
   * If that's not the case, it will exit doing nothing
-  * If the **semver format** is matched, it will validate the GH_TOKEN to be set (as it will be required to commit back to Github in next steps):
+  * If the **semver format** is matched, it will validate the **GH_TOKEN** to be set (as it will be required to commit back to Github in next steps):
     * **For vX.Y.Z format releases**:
       * It will update the package.json to X.Y.Z version and publish the package.
       * It will commit to Github in **master** branch the updated package.json using a Travis User with the GH_TOKEN.
