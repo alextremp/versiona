@@ -19,7 +19,9 @@ const versiona = ({
   }
   const travisTag = process.env.TRAVIS_TAG
   if (!travisTag) {
-    log.info(() => 'TRAVIS_TAG is not present in process.env, stopping versiona')
+    log.info(
+      () => 'TRAVIS_TAG is not present in process.env, stopping versiona'
+    )
     quit(0)
   }
   if (!REGEX.test(travisTag)) {
