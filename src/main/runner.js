@@ -5,6 +5,7 @@ import {log} from './logger'
 const queue = []
 
 const run = () => {
+  log.info(() => 'Start execution...')
   queue.forEach(command => {
     try {
       command()
@@ -22,9 +23,13 @@ const run = () => {
   log.info(() => 'Finished')
 }
 
-const addFunction = f => queue.push(() => f())
+const addFunction = (name, f) => {
+  log.info(() => ['Added function', {name}])
+  queue.push(() => f())
+}
 
 const addShell = command => {
+  log.info(() => ['Added shell command', {command}])
   queue.push(() => {
     log.info(() => ['command', {command}])
     const result = shell.exec(command)
