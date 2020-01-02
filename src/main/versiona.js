@@ -74,7 +74,9 @@ const versiona = ({
   addShell(`git remote rm origin`)
   addShell(`git remote add origin ${repoURL}`)
   addShell(`git checkout -b ${toBranch}`)
-  addFunction(() => fs.writeFileSync(packageJSONPath, updatedJSON))
+  addFunction(`Update package.json to ${releaseVersion}`, () =>
+    fs.writeFileSync(packageJSONPath, updatedJSON)
+  )
   addShell(`git add package.json`)
   addShell(`git commit -m "${message}"`)
   addShell(`npm publish${isBeta ? ' --tag beta' : ''}`)
