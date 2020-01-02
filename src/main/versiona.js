@@ -19,18 +19,20 @@ const versiona = ({
   }
   const travisTag = process.env.TRAVIS_TAG
   if (!travisTag) {
-    log.error(() => 'TRAVIS_TAG is not in process env')
-    quit()
+    log.info(
+      () => 'TRAVIS_TAG is not present in process.env, stopping versiona'
+    )
+    quit(0)
   }
   if (!REGEX.test(travisTag)) {
-    log.error(() => [
-      'TRAVIS_TAG not accepted',
+    log.info(() => [
+      'TRAVIS_TAG is not a semver format tag, stopping versiona',
       {
         received: travisTag,
-        expected: REGEX
+        semver: REGEX
       }
     ])
-    quit()
+    quit(0)
   }
   const ghToken = process.env.GH_TOKEN
   if (!ghToken) {
@@ -69,10 +71,6 @@ const versiona = ({
     }
   ])
 
-  if (test) {
-    log.info(() => 'Test finished')
-    quit(0)
-  }
   addShell(`git remote rm origin`)
   addShell(`git remote add origin ${repoURL}`)
   addShell(`git checkout -b ${toBranch}`)
@@ -82,6 +80,10 @@ const versiona = ({
   addShell(`npm publish${isBeta ? ' --tag beta' : ''}`)
   addShell(`git push --repo=${repoURL} origin ${toBranch} --quiet`)
 
+  if (test) {
+    log.info(() => 'Test finished')
+    quit(0)
+  }
   run()
 }
 
