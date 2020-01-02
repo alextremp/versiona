@@ -51,7 +51,21 @@ versiona({
 })
 ```
 
-Add a new script task into your package.json:
+**versiona accepted parameters**:
+* repoOrg: Your username or organization
+* repoName: The repository name
+* host: The Github's host (for enterprise usage, if not, it defaults to 'github.com')
+* test: boolean. _true_ means that it's only to test the configuration, so no package will be published, and no commit will be done to github. (it defaults to false).
+
+Example call from [a project using versiona](https://github.com/alextremp/brusc):
+```
+versiona({
+  repoOrg: 'alextremp',
+  repoName: 'brusc'
+})
+```
+
+**Add a new script task into your package.json**:
 
 ```
 "scripts": {
@@ -59,7 +73,7 @@ Add a new script task into your package.json:
 }
 ```
 
-Call the versiona task from Travis:
+**Call the versiona task from Travis** editing your .travis.yml:
 
 * In this travis sample:
 ```
@@ -127,5 +141,16 @@ TRAVIS_TAG=$TRAVIS_TAG GH_TOKEN=$GH_TOKEN npm run versiona
 
 ## Maintainers
 
-This library uses itself to publish to NPM.
+This library uses itself to publish to NPM, so:
+
+This project uses Travis CI for
+* PR validation
+* Merge to master validation
+* NPM publications on Release tag creation
+
+To create a new Release, take in mind:
+* The Release Tag must be named *vX.Y.Z* where X.Y.Z are the _semver_ numbers that will correspond to the published package's version.
+* Travis CI will launch [versiona](https://www.npmjs.com/package/versiona) which will:
+  * Update the package.json to the X.Y.Z version set in the Release Tag
+  * Publish the NPM package with the X.Y.Z version
 
