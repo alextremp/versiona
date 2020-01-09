@@ -72,7 +72,7 @@ versiona({
 * repoOrg: Your username or organization
 * repoName: The repository name
 * host: The Github's host (for enterprise usage, if not, it defaults to 'github.com')
-* publish: boolean. _false_ means that it will not publish to NPM (but will commit). Use it if versiona is used as intermediate step of your publishing workflow. Defaults to _true_.
+* publish: string. Alternative publish command before committing (defaults to 'npm publish'). Use it only if no NPM publication has to be done, or there are manual steps to do. Set to _false_ to deactivate publication.
 * test: boolean. _true_ means that it's only to test the configuration, so no package will be published, and no commit will be done to github. (it defaults to _false_).
 
 **Example** simple usage from [a project using versiona](https://github.com/alextremp/brusc):
@@ -89,17 +89,11 @@ versiona({
 const versiona = require('versiona')
 const shell = require('shelljs')
 
-const committed = versiona({
+versiona({
   repoOrg: 'someorg',
   repoName: 'somerepo',
-  publish: false
+  publish: 'npm run s3deploy'
 })
-
-if (commited) {
-  // upload to s3 instead of publishing
-  shell.exec('npm run deploy')
-}
-
 ```
 
 

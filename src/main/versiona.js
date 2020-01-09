@@ -7,7 +7,7 @@ const versiona = ({
   repoOrg,
   repoName,
   host = 'github.com',
-  publish = true,
+  publish = 'npm publish',
   test = false
 } = {}) => {
   const packageJSONPath = path.resolve(process.cwd(), PACKAGE_JSON)
