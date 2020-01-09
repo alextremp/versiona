@@ -7,10 +7,10 @@ const versiona = ({
   repoOrg,
   repoName,
   host = 'github.com',
-  pathToPackageJSON = 'package.json',
+  publish = true,
   test = false
 } = {}) => {
-  const packageJSONPath = path.resolve(process.cwd(), pathToPackageJSON)
+  const packageJSONPath = path.resolve(process.cwd(), PACKAGE_JSON)
   const packageJSON = require(packageJSONPath)
 
   if (!repoOrg || !repoName) {
@@ -22,7 +22,7 @@ const versiona = ({
     log.info(
       () => 'TRAVIS_TAG is not present in process.env, stopping versiona'
     )
-    quit(0)
+    return false
   }
   if (!REGEX.test(travisTag)) {
     log.info(() => [
@@ -32,7 +32,7 @@ const versiona = ({
         semver: REGEX
       }
     ])
-    quit(0)
+    return false
   }
   const ghToken = process.env.GH_TOKEN
   if (!ghToken) {
@@ -67,7 +67,7 @@ const versiona = ({
       toBranch,
       oldversion: oldVersion,
       newVersion: releaseVersion,
-      packageJSON: pathToPackageJSON
+      publish
     }
   ])
 
@@ -79,16 +79,18 @@ const versiona = ({
   )
   addShell(`git add package.json`)
   addShell(`git commit -m "${message}"`)
-  addShell(`npm publish${isBeta ? ' --tag beta' : ''}`)
+  publish && addShell(`npm publish${isBeta ? ' --tag beta' : ''}`)
   addShell(`git push --repo=${repoURL} origin ${toBranch} --quiet`)
 
   if (test) {
     log.info(() => 'Test finished')
-    quit(0)
+    return false
   }
   run()
+  return true
 }
 
+const PACKAGE_JSON = 'package.json'
 const REGEX_PATTERN = '^v[0-9]+.[0-9]+.[0-9]+(-beta.[0-9]+)?$'
 const REGEX = new RegExp(REGEX_PATTERN)
 

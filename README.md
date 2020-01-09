@@ -64,19 +64,44 @@ versiona({
 })
 ```
 
+> the _versiona_ function will stop the process with a code != 0 if something goes wrong. Otherwise, it will return:
+> - true if the publish and commit are done
+> - false if it has not run (p.ex. when the release tag is not matching the semver format)
+
 **versiona accepted parameters**:
 * repoOrg: Your username or organization
 * repoName: The repository name
 * host: The Github's host (for enterprise usage, if not, it defaults to 'github.com')
-* test: boolean. _true_ means that it's only to test the configuration, so no package will be published, and no commit will be done to github. (it defaults to false).
+* publish: boolean. _false_ means that it will not publish to NPM (but will commit). Use it if versiona is used as intermediate step of your publishing workflow. Defaults to _true_.
+* test: boolean. _true_ means that it's only to test the configuration, so no package will be published, and no commit will be done to github. (it defaults to _false_).
 
-Example call from [a project using versiona](https://github.com/alextremp/brusc):
+**Example** simple usage from [a project using versiona](https://github.com/alextremp/brusc):
 ```
+const versiona = require('versiona')
 versiona({
   repoOrg: 'alextremp',
   repoName: 'brusc'
 })
 ```
+
+**Example** usage as an intermediate step from [a project using versiona](https://github.com/alextremp/brusc):
+```
+const versiona = require('versiona')
+const shell = require('shelljs')
+
+const committed = versiona({
+  repoOrg: 'someorg',
+  repoName: 'somerepo',
+  publish: false
+})
+
+if (commited) {
+  // upload to s3 instead of publishing
+  shell.exec('npm run deploy')
+}
+
+```
+
 
 **Add a new script task into your package.json**:
 
