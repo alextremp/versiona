@@ -7,7 +7,7 @@ const versiona = ({
   repoOrg,
   repoName,
   host = 'github.com',
-  publish = 'npm publish',
+  publish = NPM_PUBLISH,
   test = false
 } = {}) => {
   const packageJSONPath = path.resolve(process.cwd(), PACKAGE_JSON)
@@ -79,7 +79,12 @@ const versiona = ({
   )
   addShell(`git add package.json`)
   addShell(`git commit -m "${message}"`)
-  publish && addShell(`npm publish${isBeta ? ' --tag beta' : ''}`)
+  publish &&
+    addShell(
+      NPM_PUBLISH === publish
+        ? `${publish}${isBeta ? ' --tag beta' : ''}`
+        : publish
+    )
   addShell(`git push --repo=${repoURL} origin ${toBranch} --quiet`)
 
   if (test) {
@@ -90,6 +95,7 @@ const versiona = ({
   return true
 }
 
+const NPM_PUBLISH = 'npm publish'
 const PACKAGE_JSON = 'package.json'
 const REGEX_PATTERN = '^v[0-9]+.[0-9]+.[0-9]+(-beta.[0-9]+)?$'
 const REGEX = new RegExp(REGEX_PATTERN)
