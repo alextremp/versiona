@@ -54,7 +54,7 @@ const versiona = ({
   const oldVersion = packageJSON.version
 
   packageJSON.version = releaseVersion
-  const updatedJSON = JSON.stringify(packageJSON, null, 2)
+  const updatedJSON = JSON.stringify(packageJSON, null, 2).trim()
 
   log.info(() => [
     'Updating...',
