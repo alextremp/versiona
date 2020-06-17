@@ -1,6 +1,6 @@
 {
   "name": "versiona",
-  "version": "4.2.3",
+  "version": "4.3.0",
   "description": "NPM auto publisher tool for Travis CI + Git tags commiting new package version",
   "main": "dist",
   "author": "Alex Castells",
