@@ -90,6 +90,7 @@ const versiona = ({
           ? `${publish}${isBeta ? ' --tag beta' : ''}`
           : publish
       )
+    masterCommand && addShell(masterCommand)
     addShell(`git push --repo=${repoURL} origin ${toBranch} --quiet`)
   } else if (isMaster) {
     masterCommand && addShell(masterCommand)
