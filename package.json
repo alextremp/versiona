@@ -48,7 +48,7 @@
     "extends": "./node_modules/@s-ui/lint/stylelint.config.js"
   },
   "dependencies": {
-    "logda": "^1.0.0",
-    "shelljs": "^0.8.3"
+    "logda": "1",
+    "shelljs": "0.8.3"
   }
 }
