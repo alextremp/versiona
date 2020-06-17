@@ -35,6 +35,15 @@ const versiona = ({
     return false
   }
 
+  let environment = travisTag ? 'pro' : 'pre'
+  const addMasterCommand = () => {
+    const command =
+      typeof masterCommand === 'function'
+        ? masterCommand(environment)
+        : `VERSIONA_ENV=${environment} ${masterCommand}`
+    masterCommand && addShell(command)
+  }
+
   if (travisTag) {
     const ghToken = process.env.GH_TOKEN
     if (!ghToken) {
@@ -48,6 +57,8 @@ const versiona = ({
     const message = `[skip travis] Update version to: ${releaseVersion}`
 
     const isBeta = releaseVersion.indexOf('-beta.') > -1
+
+    isBeta && (environment = 'dev')
 
     const toBranch = isBeta
       ? `develop/v${releaseVersion.replace(
@@ -90,10 +101,10 @@ const versiona = ({
           ? `${publish}${isBeta ? ' --tag beta' : ''}`
           : publish
       )
-    masterCommand && addShell(masterCommand)
+    addMasterCommand()
     addShell(`git push --repo=${repoURL} origin ${toBranch} --quiet`)
   } else if (isMaster) {
-    masterCommand && addShell(masterCommand)
+    addMasterCommand()
   }
 
   if (test) {
