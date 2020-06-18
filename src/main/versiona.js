@@ -14,6 +14,11 @@ const versiona = ({
   const packageJSONPath = path.resolve(process.cwd(), PACKAGE_JSON)
   const packageJSON = require(packageJSONPath)
 
+  if (process.env.TRAVIS_COMMIT_MESSAGE.startsWith(SKIP_TRAVIS_PREFIX)) {
+    console.log(process.env.TRAVIS_COMMIT_MESSAGE + ' >> skipping versiona')
+    return false
+  }
+
   if (!repoOrg || !repoName) {
     log.error(() => 'repoOrg and repoName are required')
     quit()
@@ -54,7 +59,7 @@ const versiona = ({
     const releaseVersion = travisTag.replace('v', '')
 
     const repoURL = `https://${ghToken}@${host}/${repoOrg}/${repoName}.git`
-    const message = `[skip travis] Update version to: ${releaseVersion}`
+    const message = `${SKIP_TRAVIS_PREFIX} Update version to: ${releaseVersion}`
 
     const isBeta = releaseVersion.indexOf('-beta.') > -1
 
@@ -120,5 +125,6 @@ const MASTER_COMMAND = 'echo Running on master'
 const PACKAGE_JSON = 'package.json'
 const REGEX_PATTERN = '^v[0-9]+.[0-9]+.[0-9]+(-beta.[0-9]+)?$'
 const REGEX = new RegExp(REGEX_PATTERN)
+const SKIP_TRAVIS_PREFIX = '[skip travis]'
 
 export {versiona}
