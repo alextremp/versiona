@@ -50,9 +50,9 @@ const versiona = ({
   }
 
   if (travisTag) {
-    const ghToken = process.env.GH_TOKEN
+    const ghToken = process.env.GH_TOKEN || process.env.GITHUB_TOKEN
     if (!ghToken) {
-      log.error(() => 'GH_TOKEN is not in process env')
+      log.error(() => 'GH_TOKEN neiter GITHUB_TOKEN in process env')
       quit()
     }
 
